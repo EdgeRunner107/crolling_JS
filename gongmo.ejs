@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Results</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Search Results</h1>
+    <ul id="resultsList"></ul>
+
+</body>
+</html>
+
+<script>
+    function fetchDataAndAddMarkers() {
+        $.ajax({
+            url: '/gongmoscr/result2.json', // 경로 수정
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                data.forEach(function(item) {
+                    var listItem = `
+                    <li>
+                        <strong>Title:</strong> <a href="${item.link}" target="_blank">${item.title}</a><br>
+                        <strong>Date:</strong> ${item.date}<br>
+                        <strong>Status:</strong> ${item.status}<br>
+                        <strong>Days Left:</strong> ${item.daysLeft}<br>
+                        <hr>
+                    </li>`;
+                    $('#resultsList').append(listItem);
+                });
+            },
+            error: function(error) {
+                console.error("Data loading failed:", error);
+            }
+        });
+    }
+
+    // 페이지 로드 시 함수 호출
+    $(document).ready(function() {
+        fetchDataAndAddMarkers();
+    });
+</script>
